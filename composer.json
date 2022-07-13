@@ -1,0 +1,13 @@
+{
+    "name": "joao_bortotti/blog-rede-neural",
+    "description": "PHP Neural Network demonstration",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "JoaoBortotti",
+            "email": "joao.bortotti@uotz.com.br"
+        }
+    ],
+    "require": {}
+}
