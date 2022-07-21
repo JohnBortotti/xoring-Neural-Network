@@ -28,18 +28,19 @@ class NN
      */
     $dot_hidden_1 = $this->hidden1_bias;
 
-    $dot_hidden_1[0] += $input[0] * $this->hidden1_weights[0][0];
-    $dot_hidden_1[0] += $input[1] * $this->hidden1_weights[1][0];
-
-    $dot_hidden_1[1] += $input[0] * $this->hidden1_weights[0][1];
-    $dot_hidden_1[1] += $input[1] * $this->hidden1_weights[1][1];
+    for ($i = 0; $i <= count($dot_hidden_1) - 1; $i++) {
+      $dot_hidden_1[$i] += $input[0] * $this->hidden1_weights[0][$i];
+      $dot_hidden_1[$i] += $input[1] * $this->hidden1_weights[1][$i];
+    }
 
     /* 
      * ReLU activation
      */
     $dot_hidden_1_relu = [];
-    $dot_hidden_1_relu[0] = ReLU($dot_hidden_1[0]);
-    $dot_hidden_1_relu[1] = ReLU($dot_hidden_1[1]);
+
+    for ($i = 0; $i <= count($dot_hidden_1) - 1; $i++) {
+      $dot_hidden_1_relu[$i] = ReLU($dot_hidden_1[$i]);
+    }
 
     /*
      * dot product hidden2 layer
@@ -47,11 +48,10 @@ class NN
      */
     $dot_hidden_2 = $this->hidden2_bias;
 
-    $dot_hidden_2[0] += $dot_hidden_1_relu[0] * $this->hidden2_weights[0][0];
-    $dot_hidden_2[0] += $dot_hidden_1_relu[1] * $this->hidden2_weights[1][0];
-
-    $dot_hidden_2[1] += $dot_hidden_1_relu[0] * $this->hidden2_weights[0][1];
-    $dot_hidden_2[1] += $dot_hidden_1_relu[1] * $this->hidden2_weights[1][1];
+    for ($i = 0; $i <= count($dot_hidden_2) - 1; $i++) {
+      $dot_hidden_2[$i] += $dot_hidden_1_relu[0] * $this->hidden2_weights[0][$i];
+      $dot_hidden_2[$i] += $dot_hidden_1_relu[1] * $this->hidden2_weights[1][$i];
+    }
 
     /* softmax activation 
      * probability distribution between the labels
@@ -376,10 +376,10 @@ function categ_cross_entropy_d($x, $y)
 $nn = new NN();
 
 # acc -> 0.25
-// var_dump($nn->predict([1, 1])); # miss
-// var_dump($nn->predict([0, 0])); # miss
-// var_dump($nn->predict([1, 0])); # miss
-// var_dump($nn->predict([0, 1])); # hit
+var_dump($nn->predict([1, 1])); # miss
+var_dump($nn->predict([0, 0])); # miss
+var_dump($nn->predict([1, 0])); # miss
+var_dump($nn->predict([0, 1])); # hit
 
 // echo ("\n");
 // echo ("\n");
@@ -389,7 +389,7 @@ $nn = new NN();
 # 0 / 0 = 0
 # 1 / 0 = 1
 # 0 / 1 = 1
-$nn->fit([[1, 1], [0, 0], [1, 0], [0, 1]], [[0, 1], [0, 1], [1, 0], [1, 0]]);
+// $nn->fit([[1, 1], [0, 0], [1, 0], [0, 1]], [[0, 1], [0, 1], [1, 0], [1, 0]]);
 
 // echo ("\n");
 // echo ("\n");
