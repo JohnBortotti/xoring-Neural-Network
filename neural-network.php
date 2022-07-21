@@ -52,11 +52,10 @@ class NN
       foreach ($inputs as $input) {
         $d_row = $this->hidden1_bias;
 
-        $d_row[0] += $input[0] * $this->hidden1_weights[0][0];
-        $d_row[0] += $input[1] * $this->hidden1_weights[1][0];
-
-        $d_row[1] += $input[0] * $this->hidden1_weights[0][1];
-        $d_row[1] += $input[1] * $this->hidden1_weights[1][1];
+        for ($i = 0; $i <= count($d_row) - 1; $i++) {
+          $d_row[$i] += $input[0] * $this->hidden1_weights[0][$i];
+          $d_row[$i] += $input[1] * $this->hidden1_weights[1][$i];
+        }
 
         array_push($dot_hidden_1, $d_row);
       }
@@ -76,11 +75,10 @@ class NN
       foreach ($dot_hidden_1_relu as $input) {
         $d_row = $this->hidden2_bias;
 
-        $d_row[0] += $input[0] * $this->hidden2_weights[0][0];
-        $d_row[0] += $input[1] * $this->hidden2_weights[1][0];
-
-        $d_row[1] += $input[0] * $this->hidden2_weights[0][1];
-        $d_row[1] += $input[1] * $this->hidden2_weights[1][1];
+        for ($i = 0; $i <= count($d_row) - 1; $i++) {
+          $d_row[$i] += $input[0] * $this->hidden2_weights[0][$i];
+          $d_row[$i] += $input[1] * $this->hidden2_weights[1][$i];
+        }
 
         array_push($dot_hidden_2, $d_row);
       }
@@ -317,13 +315,13 @@ function categ_cross_entropy_d($x, $y)
 $nn = new NN();
 
 # acc -> 0.25
-var_dump($nn->predict([1, 1])); # miss
-var_dump($nn->predict([0, 0])); # miss
-var_dump($nn->predict([1, 0])); # miss
-var_dump($nn->predict([0, 1])); # hit
+// var_dump($nn->predict([1, 1])); # miss
+// var_dump($nn->predict([0, 0])); # miss
+// var_dump($nn->predict([1, 0])); # miss
+// var_dump($nn->predict([0, 1])); # hit
 
-echo ("\n");
-echo ("\n");
+// echo ("\n");
+// echo ("\n");
 
 # Fitting XOR function
 # 1 / 1 = 0
@@ -332,11 +330,11 @@ echo ("\n");
 # 0 / 1 = 1
 $nn->fit([[1, 1], [0, 0], [1, 0], [0, 1]], [[0, 1], [0, 1], [1, 0], [1, 0]]);
 
-echo ("\n");
-echo ("\n");
+// echo ("\n");
+// echo ("\n");
 
 # acc -> 1.0
-var_dump($nn->predict([1, 1])); # hit
-var_dump($nn->predict([0, 0])); # hit 
-var_dump($nn->predict([1, 0])); # hit
-var_dump($nn->predict([0, 1])); # hit
+// var_dump($nn->predict([1, 1])); # hit
+// var_dump($nn->predict([0, 0])); # hit 
+// var_dump($nn->predict([1, 0])); # hit
+// var_dump($nn->predict([0, 1])); # hit
