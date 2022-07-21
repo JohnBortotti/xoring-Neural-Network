@@ -218,21 +218,25 @@ class NN
         $dbias_l1[1] += $d_relu[$z][1];
       }
 
-      # optimizing hidden2
-      $this->hidden2_weights[0][0] += -$this->learningRate * $dweights_l2[0][0];
-      $this->hidden2_weights[0][1] += -$this->learningRate * $dweights_l2[0][1];
-      $this->hidden2_weights[1][0] += -$this->learningRate * $dweights_l2[1][0];
-      $this->hidden2_weights[1][1] += -$this->learningRate * $dweights_l2[1][1];
-      $this->hidden2_bias[0] += -$this->learningRate * $dbias_l2[0];
-      $this->hidden2_bias[1] += -$this->learningRate * $dbias_l2[1];
+      # optimizing hidden2 layer
+      for ($i = 0; $i <= count($this->hidden2_weights) - 1; $i++) {
+        $this->hidden2_weights[$i][0] += -$this->learningRate * $dweights_l2[$i][0];
+        $this->hidden2_weights[$i][1] += -$this->learningRate * $dweights_l2[$i][1];
+      }
 
-      ## optimizing hidden1
-      $this->hidden1_weights[0][0] += -$this->learningRate * $dweights_l1[0][0];
-      $this->hidden1_weights[0][1] += -$this->learningRate * $dweights_l1[0][1];
-      $this->hidden1_weights[1][0] += -$this->learningRate * $dweights_l1[1][0];
-      $this->hidden1_weights[1][1] += -$this->learningRate * $dweights_l1[1][1];
-      $this->hidden1_bias[0] += -$this->learningRate * $dbias_l1[0];
-      $this->hidden1_bias[1] += -$this->learningRate * $dbias_l1[1];
+      for ($i = 0; $i <= count($this->hidden2_bias) - 1; $i++) {
+        $this->hidden2_bias[$i] += -$this->learningRate * $dbias_l2[$i];
+      }
+
+      ## optimizing hidden1 layer
+      for ($i = 0; $i <= count($this->hidden1_weights) - 1; $i++) {
+        $this->hidden1_weights[$i][0] += -$this->learningRate * $dweights_l1[$i][0];
+        $this->hidden1_weights[$i][1] += -$this->learningRate * $dweights_l1[$i][1];
+      }
+
+      for ($i = 0; $i <= count($this->hidden1_bias) - 1; $i++) {
+        $this->hidden1_bias[$i] += -$this->learningRate * $dbias_l1[$i];
+      }
 
       echo ("acc: " . $accuracy . ", loss: " . $loss . "\n");
       echo ("\n");
