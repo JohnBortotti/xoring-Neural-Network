@@ -57,14 +57,14 @@ class NN
           $d_row[$i] += $input[1] * $this->hidden1_weights[1][$i];
         }
 
-        array_push($dot_hidden_1, $d_row);
+        $dot_hidden_1[] = $d_row;
       }
 
       # ReLU activation
       $dot_hidden_1_relu = array_map(function ($x) {
         $y = [];
         foreach ($x as $z) {
-          array_push($y, ReLU($z));
+          $y[] = ReLU($z);
         }
 
         return $y;
@@ -80,13 +80,13 @@ class NN
           $d_row[$i] += $input[1] * $this->hidden2_weights[1][$i];
         }
 
-        array_push($dot_hidden_2, $d_row);
+        $dot_hidden_2[] = $d_row;
       }
 
       # softmax activation
       $softmax_output = [];
       foreach ($dot_hidden_2 as $input) {
-        array_push($softmax_output, softmax($input));
+        $softmax_output[] = softmax($input);
       }
 
       # calculating loss
@@ -95,17 +95,17 @@ class NN
       # calculating accuracy
       $predictions = [];
       foreach ($softmax_output as $out) {
-        array_push($predictions, array_keys($out, max($out))[0]);
+        $predictions[] = array_keys($out, max($out))[0];
       }
 
       $y_true = [];
       foreach ($labels as $label) {
-        array_push($y_true, array_keys($label, max($label))[0]);
+        $y_true[] = array_keys($label, max($label))[0];
       }
 
       $accuracy = [];
       for ($i = 0; $i <= count($predictions) - 1; $i++) {
-        array_push($accuracy, $predictions[$i] == $y_true[$i]);
+        $accuracy[] = $predictions[$i] == $y_true[$i];
       }
       $accuracy = array_sum($accuracy) / count($accuracy);
 
@@ -174,7 +174,7 @@ class NN
         $w0 = $dot_hidden_1[$i][0] <= 0 ? 0 : $dinputs_l2[$i][0];
         $w1 = $dot_hidden_1[$i][1] <= 0 ? 0 : $dinputs_l2[$i][1];
 
-        array_push($d_relu, [$w0, $w1]);
+        $d_relu[] = [$w0, $w1];
       }
 
       # hidden2 derivatives
@@ -207,9 +207,9 @@ class NN
       for ($z = 0; $z <= count($inputs) - 1; $z++) {
         $d_row = [];
         for ($i = 0; $i <= count($this->hidden1_weights) - 1; $i++) {
-          array_push($d_row, dot_product($d_relu[$z], $this->hidden1_weights[$i]));
+          $d_row[] = dot_product($d_relu[$z], $this->hidden1_weights[$i]);
         }
-        array_push($dinputs_l1, $d_row);
+        $dinputs_l1[] = $d_row;
       }
 
       # hidden1 derivatives in respect to bias
@@ -278,12 +278,12 @@ function categ_cross_entropy($x, $y)
 {
   $confidences = [];
   for ($i = 0; $i <= count($x) - 1; $i++) {
-    array_push($confidences, dot_product($x[$i], $y[$i]));
+    $confidences[] = dot_product($x[$i], $y[$i]);
   }
 
   $negative_logs = [];
   foreach ($confidences as $x) {
-    array_push($negative_logs, -log($x));
+    $negative_logs[] = -log($x);
   }
 
   return (array_sum($negative_logs) / count($negative_logs));
@@ -304,9 +304,9 @@ function categ_cross_entropy_d($x, $y)
   foreach ($dinputs as $y) {
     $d_row = [];
     foreach ($y as $z) {
-      array_push($d_row, ($z / $samples));
+      $d_row[] = ($z / $samples);
     }
-    array_push($dinputs_normalized, $d_row);
+    $dinputs_normalized[] = $d_row;
   }
 
   return $dinputs_normalized;
