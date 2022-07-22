@@ -28,7 +28,7 @@ class NN
      */
     $dot_hidden_1 = $this->hidden1_bias;
 
-    for ($i = 0; $i <= count($dot_hidden_1) - 1; $i++) {
+    for ($i = 0; $i < count($dot_hidden_1); $i++) {
       $dot_hidden_1[$i] += $input[0] * $this->hidden1_weights[0][$i];
       $dot_hidden_1[$i] += $input[1] * $this->hidden1_weights[1][$i];
     }
@@ -38,7 +38,7 @@ class NN
      */
     $dot_hidden_1_relu = [];
 
-    for ($i = 0; $i <= count($dot_hidden_1) - 1; $i++) {
+    for ($i = 0; $i < count($dot_hidden_1); $i++) {
       $dot_hidden_1_relu[$i] = ReLU($dot_hidden_1[$i]);
     }
 
@@ -48,7 +48,7 @@ class NN
      */
     $dot_hidden_2 = $this->hidden2_bias;
 
-    for ($i = 0; $i <= count($dot_hidden_2) - 1; $i++) {
+    for ($i = 0; $i < count($dot_hidden_2); $i++) {
       $dot_hidden_2[$i] += $dot_hidden_1_relu[0] * $this->hidden2_weights[0][$i];
       $dot_hidden_2[$i] += $dot_hidden_1_relu[1] * $this->hidden2_weights[1][$i];
     }
@@ -76,7 +76,7 @@ class NN
       foreach ($inputs as $input) {
         $d_row = $this->hidden1_bias;
 
-        for ($i = 0; $i <= count($d_row) - 1; $i++) {
+        for ($i = 0; $i < count($d_row); $i++) {
           $d_row[$i] += $input[0] * $this->hidden1_weights[0][$i];
           $d_row[$i] += $input[1] * $this->hidden1_weights[1][$i];
         }
@@ -104,7 +104,7 @@ class NN
       foreach ($dot_hidden_1_relu as $input) {
         $d_row = $this->hidden2_bias;
 
-        for ($i = 0; $i <= count($d_row) - 1; $i++) {
+        for ($i = 0; $i < count($d_row); $i++) {
           $d_row[$i] += $input[0] * $this->hidden2_weights[0][$i];
           $d_row[$i] += $input[1] * $this->hidden2_weights[1][$i];
         }
@@ -139,7 +139,7 @@ class NN
       }
 
       $accuracy = [];
-      for ($i = 0; $i <= count($predictions) - 1; $i++) {
+      for ($i = 0; $i < count($predictions); $i++) {
         $accuracy[] = $predictions[$i] == $y_true[$i];
       }
       $accuracy = array_sum($accuracy) / count($accuracy);
@@ -206,7 +206,7 @@ class NN
       /* 
        * hidden2 derivatives in respect to bias
        */
-      for ($z = 0; $z <= count($d_loss) - 1; $z++) {
+      for ($z = 0; $z < count($d_loss); $z++) {
         $dbias_l2[0] += $d_loss[$z][0];
         $dbias_l2[1] += $d_loss[$z][1];
       }
@@ -215,7 +215,7 @@ class NN
        * ReLU derivative
        */
       $d_relu = [];
-      for ($i = 0; $i <= count($dot_hidden_1) - 1; $i++) {
+      for ($i = 0; $i < count($dot_hidden_1); $i++) {
         $w0 = $dot_hidden_1[$i][0] <= 0 ? 0 : $dinputs_l2[$i][0];
         $w1 = $dot_hidden_1[$i][1] <= 0 ? 0 : $dinputs_l2[$i][1];
 
@@ -255,9 +255,9 @@ class NN
       /* 
        * hidden1 derivatives in respect to each input (derivatives * weights)
        */
-      for ($z = 0; $z <= count($inputs) - 1; $z++) {
+      for ($z = 0; $z < count($inputs); $z++) {
         $d_row = [];
-        for ($i = 0; $i <= count($this->hidden1_weights) - 1; $i++) {
+        for ($i = 0; $i < count($this->hidden1_weights); $i++) {
           $d_row[] = dot_product($d_relu[$z], $this->hidden1_weights[$i]);
         }
         $dinputs_l1[] = $d_row;
@@ -266,7 +266,7 @@ class NN
       /* 
        * hidden1 derivatives in respect to bias
        */
-      for ($z = 0; $z <= count($d_relu) - 1; $z++) {
+      for ($z = 0; $z < count($d_relu); $z++) {
         $dbias_l1[0] += $d_relu[$z][0];
         $dbias_l1[1] += $d_relu[$z][1];
       }
@@ -274,29 +274,28 @@ class NN
       /* 
        * optimizing hidden2 layer
        */
-      for ($i = 0; $i <= count($this->hidden2_weights) - 1; $i++) {
+      for ($i = 0; $i < count($this->hidden2_weights); $i++) {
         $this->hidden2_weights[$i][0] += -$this->learningRate * $dweights_l2[$i][0];
         $this->hidden2_weights[$i][1] += -$this->learningRate * $dweights_l2[$i][1];
       }
 
-      for ($i = 0; $i <= count($this->hidden2_bias) - 1; $i++) {
+      for ($i = 0; $i < count($this->hidden2_bias); $i++) {
         $this->hidden2_bias[$i] += -$this->learningRate * $dbias_l2[$i];
       }
 
       /*  
        * optimizing hidden1 layer
        */
-      for ($i = 0; $i <= count($this->hidden1_weights) - 1; $i++) {
+      for ($i = 0; $i < count($this->hidden1_weights); $i++) {
         $this->hidden1_weights[$i][0] += -$this->learningRate * $dweights_l1[$i][0];
         $this->hidden1_weights[$i][1] += -$this->learningRate * $dweights_l1[$i][1];
       }
 
-      for ($i = 0; $i <= count($this->hidden1_bias) - 1; $i++) {
+      for ($i = 0; $i < count($this->hidden1_bias); $i++) {
         $this->hidden1_bias[$i] += -$this->learningRate * $dbias_l1[$i];
       }
 
       echo ("acc: " . $accuracy . ", loss: " . $loss . "\n");
-      echo ("\n");
 
       $e++;
     }
@@ -338,7 +337,7 @@ function softmax(array $x)
 function categ_cross_entropy($x, $y)
 {
   $confidences = [];
-  for ($i = 0; $i <= count($x) - 1; $i++) {
+  for ($i = 0; $i < count($x); $i++) {
     $confidences[] = dot_product($x[$i], $y[$i]);
   }
 
@@ -356,7 +355,7 @@ function categ_cross_entropy_d($x, $y)
 
   $dinputs = $x;
 
-  for ($z = 0; $z <= count($x) - 1; $z++) {
+  for ($z = 0; $z < count($x); $z++) {
     $y_true = array_keys($y[$z], max($y[$z]))[0];
     $dinputs[$z][$y_true] -= 1;
   }
@@ -376,10 +375,10 @@ function categ_cross_entropy_d($x, $y)
 $nn = new NN();
 
 # acc -> 0.25
-var_dump($nn->predict([1, 1])); # miss
-var_dump($nn->predict([0, 0])); # miss
-var_dump($nn->predict([1, 0])); # miss
-var_dump($nn->predict([0, 1])); # hit
+// var_dump($nn->predict([1, 1])); # miss
+// var_dump($nn->predict([0, 0])); # miss
+// var_dump($nn->predict([1, 0])); # miss
+// var_dump($nn->predict([0, 1])); # hit
 
 // echo ("\n");
 // echo ("\n");
@@ -389,7 +388,7 @@ var_dump($nn->predict([0, 1])); # hit
 # 0 / 0 = 0
 # 1 / 0 = 1
 # 0 / 1 = 1
-// $nn->fit([[1, 1], [0, 0], [1, 0], [0, 1]], [[0, 1], [0, 1], [1, 0], [1, 0]]);
+$nn->fit([[1, 1], [0, 0], [1, 0], [0, 1]], [[0, 1], [0, 1], [1, 0], [1, 0]]);
 
 // echo ("\n");
 // echo ("\n");
