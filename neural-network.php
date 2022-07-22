@@ -239,8 +239,8 @@ class NN
 
       $dweights_l1[0][1] += $inputs[2][0] * $d_relu[0][1];
       $dweights_l1[0][1] += $inputs[2][1] * $d_relu[0][0];
-      $dweights_l1[0][1] += $inputs[1][0] * $d_relu[2][0];
-      $dweights_l1[0][1] += $inputs[1][1] * $d_relu[2][1];
+      $dweights_l1[0][1] += $inputs[1][0] * $d_relu[2][1];
+      $dweights_l1[0][1] += $inputs[1][1] * $d_relu[2][0];
 
       $dweights_l1[1][0] += $inputs[3][0] * $d_relu[1][1];
       $dweights_l1[1][0] += $inputs[3][1] * $d_relu[1][0];
