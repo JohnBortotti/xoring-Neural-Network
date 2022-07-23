@@ -350,13 +350,13 @@ function transpose($input)
 $nn = new NN();
 
 # acc -> 0.25
-// var_dump($nn->predict([1, 1])); # miss
-// var_dump($nn->predict([0, 0])); # miss
-// var_dump($nn->predict([1, 0])); # miss
-// var_dump($nn->predict([0, 1])); # hit
+var_dump($nn->predict([1, 1])); # miss
+var_dump($nn->predict([0, 0])); # miss
+var_dump($nn->predict([1, 0])); # miss
+var_dump($nn->predict([0, 1])); # hit
 
-// echo ("\n");
-// echo ("\n");
+echo ("\n");
+echo ("\n");
 
 # Fitting XOR function
 # 1 / 1 = 0
@@ -365,11 +365,11 @@ $nn = new NN();
 # 0 / 1 = 1
 $nn->fit([[1, 1], [0, 0], [1, 0], [0, 1]], [[0, 1], [0, 1], [1, 0], [1, 0]]);
 
-// echo ("\n");
-// echo ("\n");
+echo ("\n");
+echo ("\n");
 
 # acc -> 1.0
-// var_dump($nn->predict([1, 1])); # hit
-// var_dump($nn->predict([0, 0])); # hit 
-// var_dump($nn->predict([1, 0])); # hit
-// var_dump($nn->predict([0, 1])); # hit
+var_dump($nn->predict([1, 1])); # hit
+var_dump($nn->predict([0, 0])); # hit 
+var_dump($nn->predict([1, 0])); # hit
+var_dump($nn->predict([0, 1])); # hit
