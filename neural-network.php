@@ -169,25 +169,10 @@ class NN
       /* 
        * hidden2 derivatives in respect to each input (derivatives * weights.T)
        */
-      $dinputs_l2[0][0] += $this->hidden2_weights[0][0] * $d_loss[0][0];
-      $dinputs_l2[0][0] += $this->hidden2_weights[0][1] * $d_loss[0][1];
-      $dinputs_l2[0][1] += $this->hidden2_weights[1][0] * $d_loss[0][0];
-      $dinputs_l2[0][1] += $this->hidden2_weights[1][1] * $d_loss[0][1];
-
-      $dinputs_l2[1][0] += $this->hidden2_weights[0][0] * $d_loss[1][0];
-      $dinputs_l2[1][0] += $this->hidden2_weights[0][1] * $d_loss[1][1];
-      $dinputs_l2[1][1] += $this->hidden2_weights[1][0] * $d_loss[1][0];
-      $dinputs_l2[1][1] += $this->hidden2_weights[1][1] * $d_loss[1][1];
-
-      $dinputs_l2[2][0] += $this->hidden2_weights[0][0] * $d_loss[2][0];
-      $dinputs_l2[2][0] += $this->hidden2_weights[0][1] * $d_loss[2][1];
-      $dinputs_l2[2][1] += $this->hidden2_weights[1][0] * $d_loss[2][0];
-      $dinputs_l2[2][1] += $this->hidden2_weights[1][1] * $d_loss[2][1];
-
-      $dinputs_l2[3][0] += $this->hidden2_weights[0][0] * $d_loss[3][0];
-      $dinputs_l2[3][0] += $this->hidden2_weights[0][1] * $d_loss[3][1];
-      $dinputs_l2[3][1] += $this->hidden2_weights[1][0] * $d_loss[3][0];
-      $dinputs_l2[3][1] += $this->hidden2_weights[1][1] * $d_loss[3][1];
+      for ($i = 0; $i < count($dinputs_l2); $i++) {
+        $dinputs_l2[$i][0] = dot_product($this->hidden2_weights[0], $d_loss[$i]);
+        $dinputs_l2[$i][1] = dot_product($this->hidden2_weights[1], $d_loss[$i]);
+      }
 
       /* 
        * hidden2 derivatives in respect to bias
