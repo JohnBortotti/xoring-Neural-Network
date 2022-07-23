@@ -203,17 +203,17 @@ class NN
       /* 
        * hidden1 derivatives in respect to each weight (inputs.T * derivatives)
        */
-      $dweights_l1[0][0] += dot_product(($inputs)[2], $d_relu[2]);
-      $dweights_l1[0][0] += dot_product(($inputs)[1], $d_relu[1]);
+      $dweights_l1[0][0] = dot_product(($inputs)[2], $d_relu[2]) +
+        dot_product(($inputs)[1], $d_relu[1]);
 
-      $dweights_l1[0][1] += dot_product(($inputs)[2], transpose($d_relu)[1]);
-      $dweights_l1[0][1] += dot_product(($inputs)[1], transpose($d_relu)[0]);
+      $dweights_l1[0][1] = dot_product(($inputs)[2], transpose($d_relu)[1]) +
+        dot_product(($inputs)[1], transpose($d_relu)[0]);
 
-      $dweights_l1[1][0] += dot_product(($inputs)[3], $d_relu[1]);
-      $dweights_l1[1][0] += dot_product(($inputs)[0], $d_relu[3]);
+      $dweights_l1[1][0] + dot_product(($inputs)[3], $d_relu[1]) +
+        dot_product(($inputs)[0], $d_relu[3]);
 
-      $dweights_l1[1][1] += dot_product(($inputs)[3], transpose($d_relu)[1]);
-      $dweights_l1[1][1] += dot_product(($inputs)[0], transpose($d_relu)[0]);
+      $dweights_l1[1][1] + dot_product(($inputs)[3], transpose($d_relu)[1]) +
+        dot_product(($inputs)[0], transpose($d_relu)[0]);
 
       /* 
        * hidden1 derivatives in respect to each input (derivatives * weights.T)
