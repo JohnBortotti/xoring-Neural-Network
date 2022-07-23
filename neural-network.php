@@ -154,7 +154,7 @@ class NN
        * hidden2 derivatives
        */
       $dweights_l2 = [[0, 0], [0, 0]];
-      $dinputs_l2 = [[0, 0], [0, 0], [0, 0], [0, 0]];
+      $dinputs_l2 = [];
       $dbias_l2 = [0, 0];
 
       /* 
@@ -169,7 +169,7 @@ class NN
       /* 
        * hidden2 derivatives in respect to each input (derivatives * weights.T)
        */
-      for ($i = 0; $i < count($dinputs_l2); $i++) {
+      for ($i = 0; $i < count($d_loss); $i++) {
         $dinputs_l2[$i][0] = dot_product($this->hidden2_weights[0], $d_loss[$i]);
         $dinputs_l2[$i][1] = dot_product($this->hidden2_weights[1], $d_loss[$i]);
       }
@@ -203,20 +203,16 @@ class NN
       /* 
        * hidden1 derivatives in respect to each weight (inputs.T * derivatives)
        */
-      $dweights_l1[0][0] += $inputs[2][0] * $d_relu[2][0];
-      $dweights_l1[0][0] += $inputs[2][1] * $d_relu[2][1];
-      $dweights_l1[0][0] += $inputs[1][0] * $d_relu[1][0];
-      $dweights_l1[0][0] += $inputs[1][1] * $d_relu[1][1];
+      $dweights_l1[0][0] += dot_product(($inputs)[2], $d_relu[2]);
+      $dweights_l1[0][0] += dot_product(($inputs)[1], $d_relu[1]);
 
       $dweights_l1[0][1] += $inputs[2][0] * $d_relu[0][1];
       $dweights_l1[0][1] += $inputs[2][1] * $d_relu[0][0];
       $dweights_l1[0][1] += $inputs[1][0] * $d_relu[2][1];
       $dweights_l1[0][1] += $inputs[1][1] * $d_relu[2][0];
 
-      $dweights_l1[1][0] += $inputs[3][0] * $d_relu[1][1];
-      $dweights_l1[1][0] += $inputs[3][1] * $d_relu[1][0];
-      $dweights_l1[1][0] += $inputs[1][0] * $d_relu[3][1];
-      $dweights_l1[1][0] += $inputs[1][1] * $d_relu[3][0];
+      $dweights_l1[1][0] += dot_product(($inputs)[3], $d_relu[1]);
+      $dweights_l1[1][0] += dot_product(($inputs)[1], $d_relu[3]);
 
       $dweights_l1[1][1] += $inputs[3][0] * $d_relu[0][0];
       $dweights_l1[1][1] += $inputs[3][1] * $d_relu[0][1];
