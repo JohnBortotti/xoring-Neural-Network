@@ -158,30 +158,16 @@ class NN
       $dbias_l2 = [0, 0];
 
       /* 
-       * hidden2 derivatives in respect to each weight (inputs * derivatives)
+       * hidden2 derivatives in respect to each weight (inputs.T * derivatives)
        */
-      $dweights_l2[0][0] += $dot_hidden_1_relu[2][0] * $d_loss[2][0];
-      $dweights_l2[0][0] += $dot_hidden_1_relu[2][1] * $d_loss[2][1];
-      $dweights_l2[0][0] += $dot_hidden_1_relu[1][0] * $d_loss[1][0];
-      $dweights_l2[0][0] += $dot_hidden_1_relu[1][1] * $d_loss[1][1];
+      $dweights_l2[0][0] = dot_product(($dot_hidden_1_relu)[0], $d_loss[0]);
+      $dweights_l2[0][1] = dot_product(transpose($dot_hidden_1_relu)[1], $d_loss[0]);
 
-      $dweights_l2[0][1] += $dot_hidden_1_relu[2][0] * $d_loss[2][1];
-      $dweights_l2[0][1] += $dot_hidden_1_relu[2][1] * $d_loss[2][0];
-      $dweights_l2[0][1] += $dot_hidden_1_relu[1][0] * $d_loss[1][1];
-      $dweights_l2[0][1] += $dot_hidden_1_relu[1][1] * $d_loss[1][0];
-
-      $dweights_l2[1][0] += $dot_hidden_1_relu[3][0] * $d_loss[3][1];
-      $dweights_l2[1][0] += $dot_hidden_1_relu[3][1] * $d_loss[3][0];
-      $dweights_l2[1][0] += $dot_hidden_1_relu[0][0] * $d_loss[0][1];
-      $dweights_l2[1][0] += $dot_hidden_1_relu[0][1] * $d_loss[0][0];
-
-      $dweights_l2[1][1] += $dot_hidden_1_relu[3][0] * $d_loss[3][0];
-      $dweights_l2[1][1] += $dot_hidden_1_relu[3][1] * $d_loss[3][1];
-      $dweights_l2[1][1] += $dot_hidden_1_relu[0][0] * $d_loss[0][0];
-      $dweights_l2[1][1] += $dot_hidden_1_relu[0][1] * $d_loss[0][1];
+      $dweights_l2[1][0] = dot_product(($dot_hidden_1_relu)[1], $d_loss[1]);
+      $dweights_l2[1][1] = dot_product(transpose($dot_hidden_1_relu)[1], $d_loss[1]);
 
       /* 
-       * hidden2 derivatives in respect to each input (derivatives * weights)
+       * hidden2 derivatives in respect to each input (derivatives * weights.T)
        */
       $dinputs_l2[0][0] += $this->hidden2_weights[0][0] * $d_loss[0][0];
       $dinputs_l2[0][0] += $this->hidden2_weights[0][1] * $d_loss[0][1];
@@ -230,7 +216,7 @@ class NN
       $dbias_l1 = [0, 0];
 
       /* 
-       * hidden1 derivatives in respect to each weight (inputs * derivatives)
+       * hidden1 derivatives in respect to each weight (inputs.T * derivatives)
        */
       $dweights_l1[0][0] += $inputs[2][0] * $d_relu[2][0];
       $dweights_l1[0][0] += $inputs[2][1] * $d_relu[2][1];
@@ -253,7 +239,7 @@ class NN
       $dweights_l1[1][1] += $inputs[0][1] * $d_relu[3][1];
 
       /* 
-       * hidden1 derivatives in respect to each input (derivatives * weights)
+       * hidden1 derivatives in respect to each input (derivatives * weights.T)
        */
       for ($z = 0; $z < count($inputs); $z++) {
         $d_row = [];
@@ -371,6 +357,18 @@ function categ_cross_entropy_d($x, $y)
 
   return $dinputs_normalized;
 }
+
+function transpose($input)
+{
+  $out = [];
+  foreach ($input as $key => $subarrary) {
+    foreach ($subarrary as $subkey => $subvalue) {
+      $out[$subkey][$key] = $subvalue;
+    }
+  }
+  return $out;
+}
+
 
 $nn = new NN();
 
